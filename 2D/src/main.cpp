@@ -5,13 +5,26 @@
 #include <string>
 #include <sstream>
 
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
 
-static std::string ParseShader(const std::string& filePath) 
+static std::string ParseShader(const std::string &filePath)
 {
     std::ifstream stream(filePath);
+    if (!stream.is_open())
+    {
+        std::cerr << "❌ Failed to open shader file: " << filePath << std::endl;
+        return "";
+    }
+
     std::stringstream ss;
     ss << stream.rdbuf();
-    return ss.str();
+    std::string source = ss.str();
+
+    std::cout << "Loaded shader: " << filePath << "\n";
+    std::cout << "Shader length: " << source.length() << std::endl;
+
+    return source;
 }
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
@@ -38,19 +51,38 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
     return id;
 }
 
-static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+static unsigned int CreateShader(const std::string &vertexShader,
+                                 const std::string &fragmentShader)
 {
     unsigned int program = glCreateProgram();
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-    // attach shaders to program
+    if (vs == 0 || fs == 0)
+    {
+        std::cerr << "Shader compilation failed!" << std::endl;
+        return 0;
+    }
+
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
-    glValidateProgram(program);
 
-    // Delete shaders after they have been linked
+    int success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        int length;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+        char message[length];
+        glGetProgramInfoLog(program, length, &length, message);
+        std::cerr << "Shader program link failed:\n"
+                  << message << std::endl;
+
+        glDeleteProgram(program);
+        return 0;
+    }
+
     glDeleteShader(vs);
     glDeleteShader(fs);
 
@@ -193,16 +225,10 @@ int main() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
+    VertexBuffer vb(vertices, 4 * 2 * sizeof(float));
 
-    // Buffer address is given to genbuffers which will be filled
-    unsigned int vbo;
-    // Every object in OpenGL needs an ID. In this case 1 is the ID for the vertex buffer
-    //          ID  Buffer address
-    glGenBuffers(1, &vbo);
-    // Select buffer with ID 1
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    // Creates the buffers data store    Positions is an array so it's already a pointer.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    // Enable the vertex attribute
+    glEnableVertexAttribArray(0);
     // Set vertex attirbute for position
     glVertexAttribPointer(
         0,                  // Index: The index in the vertex array where this attribute is located. For position in this case the index is 0.
@@ -213,29 +239,13 @@ int main() {
         (void*) 0           // Pointer: The inital offset where the stride starts from
     );
 
-    // Set vertex attribute for color
-    // glVertexAttribPointer(
-    //     1,
-    //     3,
-    //     GL_FLOAT,
-    //     GL_FALSE,
-    //     5 * sizeof(float),
-    //     (void*) (2 * sizeof(float))
-    // );
-    // Enable the vertex attribute
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
     // index buffer object
-    unsigned int ibo;
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    IndexBuffer ib(indices, 6);
+    ib.Bind();
 
 
     std::string vertexShader = ParseShader("../res/shaders/vertex.glsl");
     std::string fragmentShader = ParseShader("../res/shaders/fragment.glsl");
-    
     unsigned int shader = CreateShader(vertexShader, fragmentShader);
     glUseProgram(shader);
 
@@ -253,18 +263,18 @@ int main() {
         processInput(window);
         
         // Rendering
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        // glClear(GL_COLOR_BUFFER_BIT);
         
-        if (r > 1.0f)
-            increment = -0.05f;
-        else if (r < 0.0f)
-            increment = 0.05f;
-        r += increment;
+        // if (r > 1.0f)
+        //     increment = -0.05f;
+        // else if (r < 0.0f)
+        //     increment = 0.05f;
+        // r += increment;
 
-        glUniform4f(location, r, 0.3f, 0.8f, 1.0f);
-        // Use glDrawElements when using index buffer
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        // glUniform4f(location, r, 0.3f, 0.8f, 1.0f);
+        // // Use glDrawElements when using index buffer
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         // Check call events and swap buffers
         glfwSwapBuffers(window);

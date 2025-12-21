@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/lukas/dev/opengl/OpenGLGameOfLife/build",
+  "command": "/usr/bin/gcc  -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/include -g -o CMakeFiles/glad.dir/src/glad.c.o -c /home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/glad.c",
+  "file": "/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/glad.c",
+  "output": "CMakeFiles/glad.dir/src/glad.c.o"
+},
+{
+  "directory": "/home/lukas/dev/opengl/OpenGLGameOfLife/build",
+  "command": "/usr/bin/g++  -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/include -g -std=gnu++17 -o CMakeFiles/app.dir/src/IndexBuffer.cpp.o -c /home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/IndexBuffer.cpp",
+  "file": "/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/IndexBuffer.cpp",
+  "output": "CMakeFiles/app.dir/src/IndexBuffer.cpp.o"
+},
+{
+  "directory": "/home/lukas/dev/opengl/OpenGLGameOfLife/build",
+  "command": "/usr/bin/g++  -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/include -g -std=gnu++17 -o CMakeFiles/app.dir/src/Renderer.cpp.o -c /home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/Renderer.cpp",
+  "file": "/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/Renderer.cpp",
+  "output": "CMakeFiles/app.dir/src/Renderer.cpp.o"
+},
+{
+  "directory": "/home/lukas/dev/opengl/OpenGLGameOfLife/build",
+  "command": "/usr/bin/g++  -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/include -g -std=gnu++17 -o CMakeFiles/app.dir/src/VertexBuffer.cpp.o -c /home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/VertexBuffer.cpp",
+  "file": "/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/VertexBuffer.cpp",
+  "output": "CMakeFiles/app.dir/src/VertexBuffer.cpp.o"
+},
+{
+  "directory": "/home/lukas/dev/opengl/OpenGLGameOfLife/build",
+  "command": "/usr/bin/g++  -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src -I/home/lukas/dev/opengl/OpenGLGameOfLife/2D/include -g -std=gnu++17 -o CMakeFiles/app.dir/src/main.cpp.o -c /home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/main.cpp",
+  "file": "/home/lukas/dev/opengl/OpenGLGameOfLife/2D/src/main.cpp",
+  "output": "CMakeFiles/app.dir/src/main.cpp.o"
+}
+]

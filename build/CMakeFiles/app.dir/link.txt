@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/app.dir/src/IndexBuffer.cpp.o CMakeFiles/app.dir/src/Renderer.cpp.o CMakeFiles/app.dir/src/VertexBuffer.cpp.o CMakeFiles/app.dir/src/main.cpp.o -o app  libglad.a /usr/lib/x86_64-linux-gnu/libglfw.so 
